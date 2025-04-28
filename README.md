@@ -97,7 +97,7 @@ Adv -> Adv Conj Adv
 Adj -> Adj Conj Adj
 ```
 
-## Eliminate Left Recursion
+## Eliminate Left Recursion - Final State
 To eliminate left recursion we need to get rid of the "left calls on itself" which means that the lines like `N -> N Conj NP | NP` must be changed using the formula `A -> A a | b` = `A -> b A'` `A' -> a A' | *empty*` giving the result of `N -> NP NAux` `NAux -> Conj NP NAux | *empty*`. We need to repeat as many times as neccesary, in my case, 3 times.
 ```
 S -> E SAux
@@ -118,6 +118,31 @@ Adj -> Adj Conj Adj
 This would result in the following tree for the same sentence used in the initial grammar:
 
 ![alt text](image-1.png)
+
+## Tests
+To test the program I used the following sentences:
+
+`Correct:`
+* I giorni e loro mangiano libri e pani
+* Le donne mangiano molto insalate
+* Gli amici sono alti
+* Loro legono i libri
+* Le scuole sono qui
+* I pani sono molto belli
+* Le cose sono molto belli e loro legono i libri
+* I ragazzi sono forti
+
+`Incorrect:`
+* Gli pani sono alti
+* Le scuole gli amici alti
+* I giorni sono legono
+* Le ragazzi sono belli e forti
+* Il giorni e mangiano
+
+This are the results for the correct and incorrect sentences respectively.
+
+![alt text](image-2.png)
+
 
 # References
 * Pietro. (2019b, septiembre 30). What is a programming language grammar? Compilers. https://pgrandinetti.github.io/compilers/page/what-is-a-programming-language-grammar
