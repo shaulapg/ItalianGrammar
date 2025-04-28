@@ -98,7 +98,26 @@ Adj -> Adj Conj Adj
 ```
 
 ## Eliminate Left Recursion
-To eliminate left recursion we need to get rid of the "left calls on itself" which means that the lines like `N -> N Conj NP | NP` must be changed using the formula `A -> A a | b` = `A -> b A'` `A' -> a A' | *empty*`
+To eliminate left recursion we need to get rid of the "left calls on itself" which means that the lines like `N -> N Conj NP | NP` must be changed using the formula `A -> A a | b` = `A -> b A'` `A' -> a A' | *empty*` giving the result of `N -> NP NAux` `NAux -> Conj NP NAux | *empty*`. We need to repeat as many times as neccesary, in my case, 3 times.
+```
+S -> E SAux
+SAux -> Conj E SAux | Empty
+E -> N V N Conj V | N V N | N V
+N -> NP NAux
+NAux -> Conj NP NAux | Empty
+NP -> NE | PS | N Adj | Adj
+NE -> NEP NEAux
+NEAux -> Conj NEP NEAux | Empty
+NEP -> PI FC NER VM | PF NER VF | PG FV NER VM | FC NER VM | NER VF | FV NER VM
+V -> V Adv VAux
+VAux -> Conj V VAux | Empty
+Adv -> Adv Conj Adv
+Adj -> Adj Conj Adj
+```
+
+This would result in the following tree for the same sentence used in the initial grammar:
+
+![alt text](image-1.png)
 
 # References
 * Pietro. (2019b, septiembre 30). What is a programming language grammar? Compilers. https://pgrandinetti.github.io/compilers/page/what-is-a-programming-language-grammar
