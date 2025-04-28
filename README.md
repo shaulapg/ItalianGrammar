@@ -143,6 +143,11 @@ This are the results for the correct and incorrect sentences respectively.
 
 ![alt text](image-2.png)
 
+# Chomsky Hierarchy
+
+The Chomsky Hierarchy represents the class of languages that are accepted by the different machines. It provides a framework for understanding the limitations and capabilities of different grammar and formal languages. (Sanjana Kumari, 17d. C.) It consists of four levels: Type 0 (unrestricted), Type 1 (context-sensitive), Type 2 (context-free), and Type 3 (regular). For this project I developed a type 2 because these are described as grammars which have rules where the left-hand side of a rule is always a single non-terminal symbol, and the right-hand side is a string of terminals and non-terminals. They generate context-free languages and are equivalent to nondeterministic pushdown automata. These characteristics can be seen because of the recursion and lack of ambiguity, even from the Initial state.
+
 
 # References
 * Pietro. (2019b, septiembre 30). What is a programming language grammar? Compilers. https://pgrandinetti.github.io/compilers/page/what-is-a-programming-language-grammar
+* Sanjana Kumari. (17d. C., marzo 25). Chomsky Hierarchy in Theory of Computation(TOC). Code 360. https://www.naukri.com/code360/library/chomsky-hierarchy
