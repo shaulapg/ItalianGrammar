@@ -11,10 +11,14 @@ grammar = CFG.fromstring("""
     NE -> NEP NEAux
     NEAux -> Conj NEP NEAux | Empty
     NEP -> PI FC NER VM | PF NER VF | PG FV NER VM | FC NER VM | NER VF | FV NER VM
-    V -> V Adv VAux
-    VAux -> Conj V VAux | Empty
-    Adv -> Adv Conj Adv
-    Adj -> Adj Conj Adj
+    V -> VP VAux
+    VAux -> Conj VP VAux | Empty
+    VP -> TV VPAux
+    VPAux -> Adv VPAux | Empty
+    Adv -> TAdv AdvAux
+    AdvAux -> Conj TAdv AdvAux | Empty
+    Adj -> TAdj AdjAux
+    AdjAux -> Conj TAdj AdjAux | Empty
     NER -> 'ibr' | 'agazz' | 'iorn' | 'mic' | 'an' | 'donn' | 'scuol' | 'insalat' | 'cos' | 'cas'
     PS -> 'loro'
     PI -> 'i'
@@ -22,8 +26,8 @@ grammar = CFG.fromstring("""
     PF -> 'le'
     VM -> 'i'
     VF -> 'e'
-    V -> 'sono' | 'mangiano' | 'legono'
-    Adv -> 'molto' | 'qui' | 'sempre'
+    TV -> 'sono' | 'mangiano' | 'legono'
+    TAdv -> 'molto' | 'qui' | 'sempre'
     Adj -> 'forti' | 'alti' | 'belli'
     FC -> 'b' | 'c' | 'd' | 'f' | 'g' | 'h' | 'j' | 'k' | 'l' | 'm' | 'n' | 'p' | 'q' | 'r' | 's' | 't' | 'v' | 'w' | 'x' | 'y' | 'z'
     FV -> 'a' | 'e' | 'i' | 'o' | 'u'
