@@ -85,8 +85,8 @@ As this is the initial grammar, we can observe ambiguity and left recursion, whi
 ## Eliminate Ambiguity
 To eliminate ambiguity we need to use intermediate states on each line which calls itself twice in the same option, for example, in `S -> S Conj S | *other states*` which would be solved with the intermediate state `S -> S Conj E | E` `E -> *other states*`. I added this in all lines.
 
-```html
-<b>S -> S Conj E | E
+```
+S -> S Conj E | E
 E -> N V N Conj V | N V N | N V
 
 N -> N Conj NP | NP | N Adj
@@ -103,39 +103,36 @@ Adj -> Adj Conj TAdj | TAdj
 ```
 
 ## Eliminate Left Recursion - Final State
-To eliminate left recursion we need to get rid of the "left calls on itself" which means that the lines like `N -> N Conj NP | NP` must be changed using the formula `A -> A a | b` = `A -> b A'` `A' -> a A' | *empty*` giving the result of `N -> NP NAux` `NAux -> Conj NP NAux | *empty*`. We need to repeat as many times as neccesary, in my case, 3 times.
+To eliminate left recursion we need to get rid of the "left calls on itself" which means that the lines like `N -> N Conj NP | NP` must be changed using the formula `A -> A a | b` = `A -> b A'` `A' -> a A' | *empty*` giving the result of `N -> NP NAux` `NAux -> Conj NP NAux | *empty*`. We need to repeat as many times as neccesary, in my case, these are the chanes I implemented.
 ```
-<b>S -> E SAux
-SAux -> Conj E SAux | Empty</b>
+S -> E SAux
+SAux -> Conj E SAux | Empty
 
-E -> N V N Conj V | N V N | N V
 
-<b>N -> NP NAux
-NAux -> Conj NP NAux | Empty</b>
+N -> NP NAux
+NAux -> Conj NP NAux | Empty
 
-NP -> NE | PS | N Adj | Adj
+NE -> NEP NEAux
+NEAux -> Conj NEP NEAux | Empty
 
-<b>NE -> NEP NEAux
-NEAux -> Conj NEP NEAux | Empty</b>
+V -> VP VAux
+VAux -> Conj VP VAux | Empty
 
-NEP -> PI FC NER VM | PF NER VF | PG FV NER VM | FC NER VM | NER VF | FV NER VM
+VP -> TV VPAux
+VPAux -> Adv VPAux | Empty
 
-<b>V -> VP VAux
-VAux -> Conj VP VAux | Empty</b>
+Adv -> TAdv AdvAux
+AdvAux -> Conj TAdv AdvAux | Empty
 
-<b>VP -> TV VPAux
-VPAux -> Adv VPAux | Empty</b>
-
-<b>Adv -> TAdv AdvAux
-AdvAux -> Conj TAdv AdvAux | Empty</b>
-
-<b>Adj -> TAdj AdjAux
-AdjAux -> Conj TAdj AdjAux | Empty</b>
+Adj -> TAdj AdjAux
+AdjAux -> Conj TAdj AdjAux | Empty
 ```
 
 This would result in the following tree for the same sentence used in the initial grammar:
 
 ![alt text](image-1.png)
+
+The final grammar is in the file grammar.py.
 
 ## Tests
 To test the program I used the following sentences:
