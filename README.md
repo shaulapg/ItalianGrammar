@@ -99,7 +99,6 @@ V -> V Conj VP | VP
 VP -> VP Adv | TV
 
 Adv -> Adv Conj TAdv | TAdv
-
 Adj -> Adj Conj TAdj | TAdj
 ```
 
@@ -130,8 +129,8 @@ VPAux -> Adv VPAux | Empty**
 **Adv -> TAdv AdvAux
 AdvAux -> Conj TAdv AdvAux | Empty**
 
-_Adj -> TAdj AdjAux
-AdjAux -> Conj TAdj AdjAux | Empty_
+`Adj -> TAdj AdjAux
+AdjAux -> Conj TAdj AdjAux | Empty`
 ```
 
 This would result in the following tree for the same sentence used in the initial grammar:
