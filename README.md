@@ -59,9 +59,9 @@ To design the grammar for the project we eill be parsing trees LL(1), which mean
 S -> N V N Conj V | N V N | N V | S Conj S
 N -> NE | N Conj N | PS | N Adj | Adj 
 NE -> NE Conj NE | PI FC NER VM | PF NER VF | PG FV NER VM | FC NER VM | NER VF | FV NER VM
-V -> V Adv | V Conj V
-Adv -> Adv Conj Adv
-Adj -> Adj Conj Adj
+V -> V Adv | V Conj V | TV
+Adv -> Adv Conj Adv | TAdv
+Adj -> Adj Conj Adj | TAdj
 NER -> 'ibr' | 'agazz' | 'iorn' | 'mic' | 'an' | 'donn' | 'scuol' | 'insalat' | 'cos' | 'cas'
 PS -> 'loro'
 PI -> 'i'
@@ -69,9 +69,9 @@ PG -> 'gli'
 PF -> 'le'
 VM -> 'i'
 VF -> 'e'
-V -> 'sono' | 'mangiano' | 'legono'
-Adv -> 'molto' | 'qui' | 'sempre'
-Adj -> 'forti' | 'alti' | 'belli'
+TV -> 'sono' | 'mangiano' | 'legono'
+TAdv -> 'molto' | 'qui' | 'sempre'
+TAdj -> 'forti' | 'alti' | 'belli'
 FC -> 'b' | 'c' | 'd' | 'f' | 'g' | 'h' | 'j' | 'k' | 'l' | 'm' | 'n' | 'p' | 'q' | 'r' | 's' | 't' | 'v' | 'w' | 'x' | 'y' | 'z'
 FV -> 'a' | 'e' | 'i' | 'o' | 'u'
 Conj -> 'e' | 'o'
@@ -83,36 +83,55 @@ As this is the initial grammar, we can observe ambiguity and left recursion, whi
 
 
 ## Eliminate Ambiguity
-To eliminate ambiguity we need to use intermediate states on each line which calls itself twice in the same option, for example, in `S -> S Conj S | *other states*` which would be solved with the intermediate state `S -> S Conj E | E` `E -> *other states*`. I also added this states in N (NP) and NE (NEP)
+To eliminate ambiguity we need to use intermediate states on each line which calls itself twice in the same option, for example, in `S -> S Conj S | *other states*` which would be solved with the intermediate state `S -> S Conj E | E` `E -> *other states*`. I added this in all lines.
 
 ```
 S -> S Conj E | E
 E -> N V N Conj V | N V N | N V
+
 N -> N Conj NP | NP | N Adj
 NP -> NE | PS | Adj
+
 NE -> NE Conj NEP | NEP
 NEP -> PI FC NER VM | PF NER VF | PG FV NER VM | FC NER VM | NER VF | FV NER VM
-V -> V Conj V | V Adv
-Adv -> Adv Conj Adv
-Adj -> Adj Conj Adj
+
+V -> V Conj VP | VP
+VP -> VP Adv | TV
+
+Adv -> Adv Conj TAdv | TAdv
+
+Adj -> Adj Conj TAdj | TAdj
 ```
 
 ## Eliminate Left Recursion - Final State
 To eliminate left recursion we need to get rid of the "left calls on itself" which means that the lines like `N -> N Conj NP | NP` must be changed using the formula `A -> A a | b` = `A -> b A'` `A' -> a A' | *empty*` giving the result of `N -> NP NAux` `NAux -> Conj NP NAux | *empty*`. We need to repeat as many times as neccesary, in my case, 3 times.
 ```
-S -> E SAux
-SAux -> Conj E SAux | Empty
+**S -> E SAux
+SAux -> Conj E SAux | Empty**
+
 E -> N V N Conj V | N V N | N V
-N -> NP NAux
-NAux -> Conj NP NAux | Empty
+
+**N -> NP NAux
+NAux -> Conj NP NAux | Empty**
+
 NP -> NE | PS | N Adj | Adj
-NE -> NEP NEAux
-NEAux -> Conj NEP NEAux | Empty
+
+**NE -> NEP NEAux
+NEAux -> Conj NEP NEAux | Empty**
+
 NEP -> PI FC NER VM | PF NER VF | PG FV NER VM | FC NER VM | NER VF | FV NER VM
-V -> V Adv VAux
-VAux -> Conj V VAux | Empty
-Adv -> Adv Conj Adv
-Adj -> Adj Conj Adj
+
+**V -> VP VAux
+VAux -> Conj VP VAux | Empty**
+
+**VP -> TV VPAux
+VPAux -> Adv VPAux | Empty**
+
+**Adv -> TAdv AdvAux
+AdvAux -> Conj TAdv AdvAux | Empty**
+
+**Adj -> TAdj AdjAux
+AdjAux -> Conj TAdj AdjAux | Empty**
 ```
 
 This would result in the following tree for the same sentence used in the initial grammar:
