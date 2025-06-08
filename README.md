@@ -108,7 +108,6 @@ To eliminate left recursion we need to get rid of the "left calls on itself" whi
 S -> E SAux
 SAux -> Conj E SAux | Empty
 
-
 N -> NP NAux
 NAux -> Conj NP NAux | Empty
 
